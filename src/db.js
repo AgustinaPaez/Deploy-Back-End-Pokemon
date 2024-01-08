@@ -2,18 +2,27 @@ require("dotenv").config();
 const { Sequelize } = require("sequelize");
 const fs = require("fs");
 const path = require("path");
-const { DB_DEPLOY } = process.env;
+const {
+  DB_USER_DEPLOY,
+  DB_PASSWORD_DEPLOY,
+  DB_HOST_DEPLOY,
+  DB_PORT,
+  BDD_DEPLOY,
+} = process.env;
 
-const sequelize = new Sequelize(DB_DEPLOY, {
-  logging: false, // set to console.log to see the raw SQL queries
-  native: false, // lets Sequelize know we can use pg-native for ~30% more speed
-  dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false,
+const sequelize = new Sequelize(
+  `postgres://${DB_USER_DEPLOY}:${DB_PASSWORD_DEPLOY}@${DB_HOST_DEPLOY}:${DB_PORT}/${BDD_DEPLOY}`,
+  {
+    dialectOptions: {
+      ssl: {
+        require: true, //habilitar SSL/TLS que es un certificado de seguridad para tiendas online o servidores.
+        rejectUnauthorized: false, //Para evitar errores de certificado(seguro solo para desarrolllo)
+      },
     },
-  },
-});
+    logging: false, // set to console.log to see the raw SQL queries
+    native: false, // lets Sequelize know we can use pg-native for ~30% more speed
+  }
+);
 const basename = path.basename(__filename);
 
 const modelDefiners = [];
