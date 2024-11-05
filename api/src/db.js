@@ -2,23 +2,11 @@ require("dotenv").config();
 const { Sequelize } = require("sequelize");
 const fs = require("fs");
 const path = require("path");
-const {
-  DB_USER_DEPLOY,
-  DB_PASSWORD_DEPLOY,
-  DB_HOST_DEPLOY,
-  DB_PORT,
-  BDD_DEPLOY,
-} = process.env;
+const { DB_USER, DB_PASSWORD, DB_HOST } = process.env;
 
 const sequelize = new Sequelize(
-  `postgres://${DB_USER_DEPLOY}:${DB_PASSWORD_DEPLOY}@${DB_HOST_DEPLOY}:${DB_PORT}/${BDD_DEPLOY}`,
+  `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/pokemons`,
   {
-    dialectOptions: {
-      ssl: {
-        require: true, //habilitar SSL/TLS que es un certificado de seguridad para tiendas online o servidores.
-        rejectUnauthorized: false, //Para evitar errores de certificado(seguro solo para desarrolllo)
-      },
-    },
     logging: false, // set to console.log to see the raw SQL queries
     native: false, // lets Sequelize know we can use pg-native for ~30% more speed
   }
